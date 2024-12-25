@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d359d4008425644a3cdafe8248d1f1, type: 3}
+  m_Name: Console Preferences
+  m_EditorClassIdentifier: 
+  ToggleKey: 9
+  NormalLogTextColor: {r: 1, g: 1, b: 1, a: 1}
+  WarningLogTextColor: {r: 1, g: 0.5, b: 0, a: 1}
+  ErrorLogTextColor: {r: 1, g: 0, b: 0, a: 1}
+  NormalLogBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+  HighlightedLogBackroundColor: {r: 0, g: 0, b: 1, a: 0.75}
+  HighlightedCommandColor: {r: 1, g: 0.5, b: 0, a: 1}
+  PressedCommandColor: {r: 1, g: 0.5, b: 0, a: 0.75}
