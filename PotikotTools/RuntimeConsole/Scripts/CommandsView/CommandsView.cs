@@ -68,15 +68,14 @@ namespace PotikotTools.RuntimeConsole
             _commandInputView.Focus();
         }
 
-        private void OnInputFocused(string inputCommand)
+        private void OnInputFocused()
         {
-            //OnCommandChanged(inputCommand);
-            //_scroll.Enable();
+            _scroll.Show();
         }
 
         private void OnInputUnfocused()
         {
-            //_scroll.Disable();
+            _scroll.Hide();
         }
 
         private List<ICommandInfo> GetCommandsByName(string commandName)

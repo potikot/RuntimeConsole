@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace PotikotTools.RuntimeConsole
@@ -10,11 +12,13 @@ namespace PotikotTools.RuntimeConsole
         public event Action<string> OnCommandChanged;
         public event Action<string> OnCommandSubmitted;
 
-        public event Action<string> OnFocused;
+        public event Action OnFocused;
         public event Action OnUnfocused;
 
         [SerializeField] private TMP_InputField _inputField;
         [SerializeField] private Button _submitButton;
+
+        [SerializeField] private GameObject _commandHintButtonsContainer;
 
         private bool _isNotEmptyLastChange;
 
@@ -100,12 +104,30 @@ namespace PotikotTools.RuntimeConsole
 
         private void Internal_OnFocused(string text)
         {
-            OnFocused?.Invoke(text);
+            OnFocused?.Invoke();
         }
 
         private void Internal_OnUnfocused(string text)
         {
+            if (IsCommandRelated(GetFirstHoveredObject()))
+                return;
+
             OnUnfocused?.Invoke();
+        }
+
+        private bool IsCommandRelated(GameObject obj)
+        {
+            return obj.transform.parent.gameObject == _commandHintButtonsContainer || obj == _commandHintButtonsContainer;
+        }
+
+        private GameObject GetFirstHoveredObject()
+        {
+            PointerEventData eventData = new(EventSystem.current) { position = Input.mousePosition };
+            List<RaycastResult> raycastResults = new();
+
+            EventSystem.current.RaycastAll(eventData, raycastResults);
+
+            return raycastResults[0].gameObject;
         }
     }
 }

@@ -207,6 +207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputField: {fileID: 4890575789055777213}
   _submitButton: {fileID: 6086324957529060665}
+  _commandHintButtonsContainer: {fileID: 4425368019517615140}
 --- !u!1 &2294441020392278815
 GameObject:
   m_ObjectHideFlags: 0
