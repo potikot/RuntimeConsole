@@ -28,7 +28,7 @@ namespace PotikotTools.RuntimeConsole
 
                     if (consoleView == null)
                     {
-                        consoleView = Resources.Load<ConsoleView>("Console");
+                        consoleView = Object.Instantiate(Resources.Load<ConsoleView>("Console"));
                         if (consoleView == null || !consoleView.TryGetComponent(out commandsView))
                             return null;
                     }
