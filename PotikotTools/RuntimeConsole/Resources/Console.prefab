@@ -280,6 +280,7 @@ GameObject:
   - component: {fileID: 676556287252690547}
   - component: {fileID: 3696158459332315575}
   - component: {fileID: 4006524619157312263}
+  - component: {fileID: -1050349177181285142}
   m_Layer: 0
   m_Name: Console
   m_TagString: Untagged
@@ -332,6 +333,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _commandInputView: {fileID: 2478569331384263336}
   _scroll: {fileID: 2130649066417435581}
+--- !u!114 &-1050349177181285142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2722518982206533432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 636b15a9696a01644be33b53bb52ca29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3231639016335967381
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,7 +395,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 3755353303073728309}
-  viewPrefab: {fileID: 2576859701320852547, guid: 9f669a5add2513c4eb7416660b14b403, type: 3}
+  elementViewPrefab: {fileID: 2576859701320852547, guid: 9f669a5add2513c4eb7416660b14b403, type: 3}
   simultaneousElementsAmount: 13
   isScrollAllowed: 1
   isDragAllowed: 1
@@ -1063,7 +1076,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2217294777675937770
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1097,7 +1110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 8216922544358871971}
-  viewPrefab: {fileID: 3518437479664600637, guid: 524629ff47249b14190bf467b7cb2d20, type: 3}
+  elementViewPrefab: {fileID: 3518437479664600637, guid: 524629ff47249b14190bf467b7cb2d20, type: 3}
   simultaneousElementsAmount: 10
   isScrollAllowed: 1
   isDragAllowed: 0
