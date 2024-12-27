@@ -1,4 +1,7 @@
 {
     "name": "com.potikot_tools.runtime_console",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "dependencies": {
+        "com.unity.textmeshpro" : "3.0.7"
+    }
 }
