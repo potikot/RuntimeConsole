@@ -8,30 +8,31 @@ namespace PotikotTools.RuntimeConsole
 
         private static ConsolePreferencesSO _preferencesSO;
 
-        public static ConsolePreferencesSO PreferencesSO
+        #region Properties
+
+        public static bool InitializeOnStart => _preferencesSO.InitializeOnStart;
+
+        public static KeyCode ToggleKey => _preferencesSO.ToggleKey;
+
+        public static Color NormalLogTextColor => _preferencesSO.NormalLogTextColor;
+        public static Color WarningLogTextColor => _preferencesSO.WarningLogTextColor;
+        public static Color ErrorLogTextColor => _preferencesSO.ErrorLogTextColor;
+
+        public static Color NormalLogBackgroundColor => _preferencesSO.NormalLogBackgroundColor;
+        public static Color HighlightedLogBackroundColor => _preferencesSO.HighlightedLogBackroundColor;
+
+        public static Color HighlightedCommandColor => _preferencesSO.HighlightedCommandColor;
+        public static Color PressedCommandColor => _preferencesSO.PressedCommandColor;
+
+        #endregion
+
+        static ConsolePreferences()
         {
-            get
-            {
-                if (_preferencesSO == null)
-                    _preferencesSO = Resources.Load<ConsolePreferencesSO>(FileName);
-                if (_preferencesSO == null)
-                    _preferencesSO = ScriptableObject.CreateInstance<ConsolePreferencesSO>();
-
-                return _preferencesSO;
-            }
+            if (_preferencesSO == null)
+                _preferencesSO = Resources.Load<ConsolePreferencesSO>(FileName);
+            if (_preferencesSO == null)
+                _preferencesSO = ScriptableObject.CreateInstance<ConsolePreferencesSO>();
         }
-
-        public static KeyCode ToggleKey => PreferencesSO.ToggleKey;
-
-        public static Color NormalLogTextColor => PreferencesSO.NormalLogTextColor;
-        public static Color WarningLogTextColor => PreferencesSO.WarningLogTextColor;
-        public static Color ErrorLogTextColor => PreferencesSO.ErrorLogTextColor;
-
-        public static Color NormalLogBackgroundColor => PreferencesSO.NormalLogBackgroundColor;
-        public static Color HighlightedLogBackroundColor => PreferencesSO.HighlightedLogBackroundColor;
-
-        public static Color HighlightedCommandColor => PreferencesSO.HighlightedCommandColor;
-        public static Color PressedCommandColor => PreferencesSO.PressedCommandColor;
 
         public static Color GetLogTextColor(LogType logType)
         {

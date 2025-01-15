@@ -13,12 +13,6 @@ namespace PotikotTools.RuntimeConsole
 
         private bool _hasUnsavedChanges;
 
-        [InitializeOnLoadMethod]
-        private static void Initialize()
-        {
-            //LoadOrCreatePreferences();
-        }
-
         [MenuItem("Tools/PotikotTools/Console Preferences")]
         public static void Open()
         {
@@ -44,7 +38,7 @@ namespace PotikotTools.RuntimeConsole
         {
             EditorGUI.BeginChangeCheck();
 
-            DrawKeyFields();
+            DrawGeneralFields();
             DrawLogTextColorFields();
             DrawLogBackgroundColorFields();
             DrawCommandTextColorFields();
@@ -86,9 +80,11 @@ namespace PotikotTools.RuntimeConsole
             EditorGUILayout.LabelField(text, EditorStyles.boldLabel);
         }
 
-        private void DrawKeyFields()
+        private void DrawGeneralFields()
         {
-            DrawLabel("Keys");
+            DrawLabel("General");
+
+            _preferencesCopy.InitializeOnStart = EditorGUILayout.Toggle("Initialize On Start", _preferencesCopy.InitializeOnStart);
 
             _preferencesCopy.ToggleKey = (KeyCode)EditorGUILayout.EnumPopup("Open/Close Key", _preferencesCopy.ToggleKey);
 

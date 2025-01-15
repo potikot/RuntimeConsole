@@ -11,7 +11,8 @@ namespace PotikotTools.RuntimeConsole
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Initialize()
         {
-            Controller.Disable();
+            if (ConsolePreferences.InitializeOnStart)
+                Controller.Disable();
         }
 
         public static ConsoleController Controller

@@ -4,6 +4,8 @@ namespace PotikotTools.RuntimeConsole
 {
     public class ConsolePreferencesSO : ScriptableObject
     {
+        public bool InitializeOnStart = true;
+
         public KeyCode ToggleKey = KeyCode.Tab;
 
         public Color NormalLogTextColor = Color.white;
@@ -18,6 +20,8 @@ namespace PotikotTools.RuntimeConsole
 
         public void Reset()
         {
+            InitializeOnStart = true;
+
             ToggleKey = KeyCode.Tab;
 
             NormalLogTextColor = Color.white;
@@ -33,6 +37,8 @@ namespace PotikotTools.RuntimeConsole
 
         public void CopyFrom(ConsolePreferencesSO preferences)
         {
+            InitializeOnStart = preferences.InitializeOnStart;
+
             ToggleKey = preferences.ToggleKey;
 
             NormalLogTextColor = preferences.NormalLogTextColor;
@@ -49,18 +55,7 @@ namespace PotikotTools.RuntimeConsole
         public ConsolePreferencesSO CreateCopy()
         {
             ConsolePreferencesSO preferences = CreateInstance<ConsolePreferencesSO>();
-
-            preferences.ToggleKey = ToggleKey;
-
-            preferences.NormalLogTextColor = NormalLogTextColor;
-            preferences.WarningLogTextColor = WarningLogTextColor;
-            preferences.ErrorLogTextColor = ErrorLogTextColor;
-
-            preferences.NormalLogBackgroundColor = NormalLogBackgroundColor;
-            preferences.HighlightedLogBackroundColor = HighlightedLogBackroundColor;
-
-            preferences.HighlightedCommandColor = HighlightedCommandColor;
-            preferences.PressedCommandColor = PressedCommandColor;
+            preferences.CopyFrom(this);
 
             return preferences;
         }

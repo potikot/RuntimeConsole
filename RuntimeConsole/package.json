@@ -1,7 +1,7 @@
 {
   "name": "com.potikot.runtime-console",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "RuntimeConsole",
   "license": "MIT",
-  "repository": ""
+  "repository": "https://github.com/potikot/RuntimeConsole"
 }
