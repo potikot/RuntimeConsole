@@ -1,0 +1,16 @@
+{
+    "name": "PotikotTools.RuntimeConsole.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:eb18483103a70de46bc4a1f23482f9b4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
