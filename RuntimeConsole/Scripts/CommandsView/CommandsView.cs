@@ -12,6 +12,8 @@ namespace PotikotTools.RuntimeConsole
         [Header("Command Hint")]
         [SerializeField] private CommandHintsScroll _scroll;
 
+        private string _lastCommandName;
+
         public void Start()
         {
             _scroll.Init(_commandInputView);
@@ -49,19 +51,23 @@ namespace PotikotTools.RuntimeConsole
         {
             if (string.IsNullOrEmpty(inputCommand))
             {
+                _lastCommandName = null;
                 _scroll.Clear();
                 return;
             }
 
             string commandName = GetCommandName(inputCommand);
-            List<ICommandInfo> commands = GetCommandsByName(commandName);
+            if (commandName == _lastCommandName)
+                return;
 
-            SetupCommands(commands);
+            _lastCommandName = commandName;
+            SetupCommands(GetCommandsByName(commandName));
         }
 
         private void Internal_OnCommandSubmitted(string inputCommand)
         {
             CommandHandler.Execute(inputCommand);
+            _lastCommandName = null;
             _scroll.Clear();
 
             _commandInputView.ClearInput();
@@ -83,7 +89,7 @@ namespace PotikotTools.RuntimeConsole
             List<ICommandInfo> result = new();
 
             foreach (ICommandInfo commandInfo in CommandHandler.Commands)
-                if (commandInfo.Name.Contains(commandName))
+                if (commandInfo.Name.StartsWith(commandName))
                     result.Add(commandInfo);
 
             return result;
@@ -95,8 +101,8 @@ namespace PotikotTools.RuntimeConsole
             for (; spaceIndex < limit; spaceIndex++)
                 if (command[spaceIndex] == ' ')
                     break;
-
-            return command[..spaceIndex];
+            
+            return command[spaceIndex] == ' ' ? command[..spaceIndex] : command[..++spaceIndex];
         }
     }
 }
