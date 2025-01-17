@@ -1,28 +1,5 @@
 using System;
 
-/// <summary>
-/// any -> object
-/// 
-/// string -> int
-///        -> float
-///        -> enum?
-///        -> custom type that inherited special interface
-/// 
-/// int -> bool
-///     -> float
-///     -> string
-///     -> enum
-///     -> 
-/// 
-/// float -> bool
-///       -> int
-///       -> string
-///       -> enum?
-///       -> 
-/// 
-/// custom type that inherited special interface -> string
-/// </summary>
-
 namespace PotikotTools
 {
     public static class Converter
@@ -47,7 +24,16 @@ namespace PotikotTools
         }
 
         /// <summary>
-        /// targetType should be: int, float, bool, enum or IConvertable
+        /// T should be: int, float, bool, enum or IStringConvertible
+        /// </summary>
+        /// <returns> object of type T </returns>
+        public static T Convert<T>(string value)
+        {
+            return (T)Convert(typeof(T), value);
+        }
+
+        /// <summary>
+        /// targetType should be: int, float, bool, enum or IStringConvertible
         /// </summary>
         /// <returns> object of type - targetType </returns>
         public static object Convert(Type targetType, string value)
