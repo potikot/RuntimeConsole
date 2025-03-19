@@ -9,10 +9,10 @@ namespace PotikotTools.Commands
         private string _hintText;
 
         private Type[] _parameterTypes;
-        private bool _isParameterTypesInitialized;
 
         public string Name { get; private set; }
-        public object Obj { get; private set; }
+        public string Description { get; private set; }
+        public object Context { get; private set; }
         public MethodInfo MethodInfo { get; private set; }
 
         public string HintText
@@ -43,36 +43,40 @@ namespace PotikotTools.Commands
         {
             get
             {
-                if (_isParameterTypesInitialized)
-                    return _parameterTypes;
-
-                ParameterInfo[] parameterInfos = MethodInfo.GetParameters();
-
-                if (parameterInfos.Length > 0)
+                if (_parameterTypes == null)
                 {
-                    _parameterTypes = new Type[parameterInfos.Length];
+                    ParameterInfo[] parameterInfos = MethodInfo.GetParameters();
 
-                    for (int i = 0; i < parameterInfos.Length; i++)
-                        _parameterTypes[i] = parameterInfos[i].ParameterType;
+                    if (parameterInfos.Length > 0)
+                    {
+                        _parameterTypes = new Type[parameterInfos.Length];
+
+                        for (int i = 0; i < parameterInfos.Length; i++)
+                            _parameterTypes[i] = parameterInfos[i].ParameterType;
+                    }
+                    else
+                        _parameterTypes = new Type[0];
                 }
 
-                _isParameterTypesInitialized = true;
                 return _parameterTypes;
             }
         }
 
         public bool IsValid => MethodInfo != null && !string.IsNullOrEmpty(Name);
 
-        public MethodCommandInfo(string name, MethodInfo methodInfo, object obj = null)
+        public MethodCommandInfo(string name, string description, MethodInfo methodInfo, object context = null)
         {
             Name = name.Replace(' ', '_');
+            Description = description;
             MethodInfo = methodInfo;
-            Obj = obj;
+            Context = context;
         }
+
+        public MethodCommandInfo(string name, MethodInfo methodInfo, object context = null) : this(name, null, methodInfo, context) { }
 
         public void Invoke(object[] parameters)
         {
-            MethodInfo.Invoke(Obj, parameters);
+            MethodInfo.Invoke(Context, parameters);
         }
     }
 }

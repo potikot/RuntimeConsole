@@ -7,8 +7,7 @@ namespace PotikotTools.Commands
 {
     public static class CommandHandler
     {
-        private const BindingFlags _bindingFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-        private const int _initialCommandsListCapacity = 20;
+        private const int InitialCommandsListCapacity = 20;
 
         private static List<ICommandInfo> _commands;
 
@@ -17,26 +16,33 @@ namespace PotikotTools.Commands
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         private static void Initialize()
         {
-            _commands = new List<ICommandInfo>(_initialCommandsListCapacity);
+            _commands = new List<ICommandInfo>(InitialCommandsListCapacity);
             SetupCommands();
         }
 
         private static void SetupCommands()
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            Type[] types = assembly.GetTypes();
+            List<string> assemblyNames = CommandHandlerPreferences.CommandAttributeUsingAssemblies;
+            List<Assembly> assemblies = new(assemblyNames.Count);
 
-            foreach (Type type in types)
+            foreach (string assemblyName in assemblyNames)
+                assemblies.Add(Assembly.Load(assemblyName));
+
+            Debug.Log($"Loaded commands from assemblies({assemblies.Count}):");
+            foreach (Assembly assembly in assemblies)
             {
-                AddMethods(type);
-                AddFields(type);
+                Debug.Log(assembly.FullName);
+                foreach (Type type in assembly.GetTypes())
+                {
+                    AddMethods(type);
+                    AddFields(type);
+                }
             }
         }
 
-        public static void Execute(string commandName, object[] parameters = null)
+        public static void Execute(string commandName, object[] parameters)
         {
-            if (TryGet(commandName, out ICommandInfo commandInfo)
-                || (commandInfo.ParameterTypes.Length > 0
+            if (TryGet(commandName, out ICommandInfo commandInfo) || (commandInfo.ParameterTypes.Length > 0
                 && (parameters == null || commandInfo.ParameterTypes.Length != parameters.Length)))
                 return;
 
@@ -75,12 +81,17 @@ namespace PotikotTools.Commands
             _commands.Add(commandInfo);
         }
 
-        public static void Register(string commandName, Action callback)
+        public static void Register(string commandName, string description, Action callback)
         {
             if (callback == null || string.IsNullOrEmpty(commandName) || Contains(commandName))
                 return;
 
-            _commands.Add(new ActionCommandInfo(commandName, callback));
+            _commands.Add(new ActionCommandInfo(commandName, description, callback));
+        }
+
+        public static void Register(string commandName, Action callback)
+        {
+            Register(commandName, null, callback);
         }
 
         public static void Unregister(ICommandInfo commandInfo)
@@ -138,9 +149,8 @@ namespace PotikotTools.Commands
                 parameters = null;
                 return true;
             }
-            else if (splittedCommand.Length > 1 &&
-                parameterTypes.Length == 1 &&
-                (parameterTypes[0] == typeof(string) || parameterTypes[0] == typeof(object)))
+            else if (splittedCommand.Length > 1 && parameterTypes.Length == 1
+                && (parameterTypes[0] == typeof(string) || parameterTypes[0] == typeof(object)))
             {
                 parameters = new object[1] { inputCommand[(splittedCommand[0].Length + 1)..] };
                 return true;
@@ -173,7 +183,7 @@ namespace PotikotTools.Commands
 
         private static void AddMethods(Type type)
         {
-            MethodInfo[] methodInfos = type.GetMethods(_bindingFlags);
+            MethodInfo[] methodInfos = type.GetMethods(CommandHandlerPreferences.ReflectionBindingFlags);
             foreach (MethodInfo methodInfo in methodInfos)
             {
                 CommandAttribute attribute = methodInfo.GetCustomAttribute<CommandAttribute>();
@@ -184,13 +194,14 @@ namespace PotikotTools.Commands
                 string methodName = string.IsNullOrEmpty(attribute.Name) ? methodInfo.Name : attribute.Name;
                 _commands.Add(new MethodCommandInfo(
                     attribute.IncludeTypeName ? $"{type.Name}.{methodName}" : methodName,
+                    attribute.Description,
                     methodInfo));
             }
         }
 
         private static void AddFields(Type type)
         {
-            FieldInfo[] fieldInfos = type.GetFields(_bindingFlags);
+            FieldInfo[] fieldInfos = type.GetFields(CommandHandlerPreferences.ReflectionBindingFlags);
             foreach (FieldInfo fieldInfo in fieldInfos)
             {
                 CommandAttribute attribute = fieldInfo.GetCustomAttribute<CommandAttribute>();
@@ -201,6 +212,7 @@ namespace PotikotTools.Commands
                 string fieldName = string.IsNullOrEmpty(attribute.Name) ? fieldInfo.Name : attribute.Name;
                 _commands.Add(new FieldCommandInfo(
                     attribute.IncludeTypeName ? $"{type.Name}.{fieldName}" : fieldName,
+                    attribute.Description,
                     fieldInfo));
             }
         }

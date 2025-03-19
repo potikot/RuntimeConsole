@@ -18,6 +18,6 @@ MonoBehaviour:
   WarningLogTextColor: {r: 1, g: 0.5, b: 0, a: 1}
   ErrorLogTextColor: {r: 1, g: 0, b: 0, a: 1}
   NormalLogBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-  HighlightedLogBackroundColor: {r: 0, g: 0, b: 1, a: 0.75}
+  HighlightedLogBackgroundColor: {r: 0, g: 0, b: 1, a: 0.75}
   HighlightedCommandColor: {r: 1, g: 0.5, b: 0, a: 1}
   PressedCommandColor: {r: 1, g: 0.5, b: 0, a: 0.75}

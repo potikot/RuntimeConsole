@@ -5,7 +5,8 @@ namespace PotikotTools.Commands
     public interface ICommandInfo
     {
         string Name { get; }
-        object Obj { get; }
+        string Description { get; }
+        object Context { get; }
         string HintText { get; }
 
         public Type[] ParameterTypes { get; }

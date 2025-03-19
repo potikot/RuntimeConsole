@@ -4,32 +4,66 @@ namespace PotikotTools.RuntimeConsole
 {
     public static class ConsolePreferences
     {
-        public const string FileName = "Console Preferences";
-
         private static ConsolePreferencesSO _preferencesSO;
 
         #region Properties
 
-        public static bool InitializeOnStart => _preferencesSO.InitializeOnStart;
+        public static bool InitializeOnStart
+        {
+            get => _preferencesSO.InitializeOnStart;
+            set => _preferencesSO.InitializeOnStart = value;
+        }
 
-        public static KeyCode ToggleKey => _preferencesSO.ToggleKey;
+        public static KeyCode ToggleKey
+        {
+            get => _preferencesSO.ToggleKey;
+            set => _preferencesSO.ToggleKey = value;
+        }
 
-        public static Color NormalLogTextColor => _preferencesSO.NormalLogTextColor;
-        public static Color WarningLogTextColor => _preferencesSO.WarningLogTextColor;
-        public static Color ErrorLogTextColor => _preferencesSO.ErrorLogTextColor;
+        public static Color NormalLogTextColor
+        {
+            get => _preferencesSO.NormalLogTextColor;
+            set => _preferencesSO.NormalLogTextColor = value;
+        }
+        public static Color WarningLogTextColor
+        {
+            get => _preferencesSO.WarningLogTextColor;
+            set => _preferencesSO.WarningLogTextColor = value;
+        }
+        public static Color ErrorLogTextColor
+        {
+            get => _preferencesSO.ErrorLogTextColor;
+            set => _preferencesSO.ErrorLogTextColor = value;
+        }
 
-        public static Color NormalLogBackgroundColor => _preferencesSO.NormalLogBackgroundColor;
-        public static Color HighlightedLogBackroundColor => _preferencesSO.HighlightedLogBackroundColor;
+        public static Color NormalLogBackgroundColor
+        {
+            get => _preferencesSO.NormalLogBackgroundColor;
+            set => _preferencesSO.NormalLogBackgroundColor = value;
+        }
+        public static Color HighlightedLogBackgroundColor
+        {
+            get => _preferencesSO.HighlightedLogBackgroundColor;
+            set => _preferencesSO.HighlightedLogBackgroundColor = value;
+        }
 
-        public static Color HighlightedCommandColor => _preferencesSO.HighlightedCommandColor;
-        public static Color PressedCommandColor => _preferencesSO.PressedCommandColor;
+        public static Color HighlightedCommandColor
+        {
+            get => _preferencesSO.HighlightedCommandColor;
+            set => _preferencesSO.HighlightedCommandColor = value;
+        }
+        public static Color PressedCommandColor
+        {
+            get => _preferencesSO.PressedCommandColor;
+            set => _preferencesSO.PressedCommandColor = value;
+        }
 
         #endregion
 
         static ConsolePreferences()
         {
-            if (_preferencesSO == null)
-                _preferencesSO = Resources.Load<ConsolePreferencesSO>(FileName);
+            _preferencesSO = Resources.Load<ConsolePreferencesSO>("Console Preferences");
+
             if (_preferencesSO == null)
                 _preferencesSO = ScriptableObject.CreateInstance<ConsolePreferencesSO>();
         }
@@ -44,5 +78,26 @@ namespace PotikotTools.RuntimeConsole
                 _ => NormalLogTextColor
             };
         }
+
+        public static ConsolePreferencesSO GetPreferences()
+        {
+            return _preferencesSO;
+        }
+
+#if UNITY_EDITOR
+
+        public static void Save()
+        {
+            UnityEditor.EditorUtility.SetDirty(_preferencesSO);
+            UnityEditor.AssetDatabase.SaveAssets();
+        }
+
+        public static void Reset()
+        {
+            _preferencesSO.Reset();
+            Save();
+        }
+
+        #endif
     }
 }

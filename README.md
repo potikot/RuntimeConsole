@@ -1,6 +1,6 @@
 # Runtime Console
 
-Tool for Unity that allows you to view log history, execute commands, and extend functionality by adding custom commands. This tool is particulary useful for debugging and interacting with your application during runtime.
+Tool for Unity that allows you to view log history, execute commands, and extend functionality by adding custom commands. This tool is particularly useful for debugging and interacting with your application during runtime.
 
 ## Features
 
@@ -25,12 +25,15 @@ https://github.com/potikot/RuntimeConsole.git?path=RuntimeConsole
   3. Click the `+` button in the top left.
   4. Select `Add package from git URL...`.
   5. Enter following url: `https://github.com/potikot/RuntimeConsole.git?path=RuntimeConsole`.
-  5. If you want to install specific version just add `#v1.0.0` to the link (`1.0.0` is version you want).
-  6. Click `Add`. The Runtime Console package will be installed.
+  6. If you want to install specific version just add `#v1.0.0` to the link (`1.0.0` is version you want).
+  7. Click `Add`. The Runtime Console package will be installed.
 
 </details>
 
 ### [Version History](https://github.com/potikot/RuntimeConsole/tags)
+
+> [!NOTE]
+> It is better to read README for your installed version of package.
 
 ## Usage
 
@@ -56,7 +59,7 @@ Console.LogError("This is an error message.");
 
 #### Static
 
-You can register static methods and fields with `CommandAttribute`. Basicaly command appear in Console as `<ClassName>.<(Method/Field)Name> <arg1> <arg2> ...`. Attribute contains `Name` and `IncludeTypeName` fields:
+You can register static methods and fields with `CommandAttribute`. Basically command appear in Console as `<ClassName>.<(Method/Field)Name> <arg1> <arg2> ...`. Attribute contains `Name` and `IncludeTypeName` fields:
 
 - `Name` replaces method/field name.
 - `IncludeTypeName` determines whether the class name will be included in the command (`true` - will be included, `false` - will not).
@@ -89,7 +92,7 @@ public class ExampleClass
 
 #### Non Static
 
-Also you can register commands through this API:
+Also, you can register commands through this API:
 
 ```csharp
 CommandHandler.Register(string commandName, Action callback);
@@ -116,7 +119,7 @@ public class FieldCommandInfo : ICommandInfo
     // Name. Should not contain spaces
     public string Name { get; private set; }
     // Target object
-    public object Obj { get; private set; }
+    public object Context { get; private set; }
     // Field info
     public FieldInfo FieldInfo { get; private set; }
 
@@ -140,17 +143,17 @@ public class FieldCommandInfo : ICommandInfo
     public bool IsValid => FieldInfo != null && !string.IsNullOrEmpty(Name);
 
     // Constructor
-    public FieldCommandInfo(string name, FieldInfo fieldInfo, object obj = null)
+    public FieldCommandInfo(string name, FieldInfo fieldInfo, object context = null)
     {
         Name = name.Replace(' ', '_');
         FieldInfo = fieldInfo;
-        Obj = obj;
+        Context = context;
     }
 
     // Invoke command
     public void Invoke(object[] parameters)
     {
-        FieldInfo.SetValue(Obj, parameters[0]);
+        FieldInfo.SetValue(Context, parameters[0]);
     }
 }
 ```

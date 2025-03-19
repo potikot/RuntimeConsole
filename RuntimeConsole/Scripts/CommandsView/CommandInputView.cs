@@ -67,22 +67,9 @@ namespace PotikotTools.RuntimeConsole
             SetInputWithoutNotify(string.Empty);
         }
 
-        private void RemoveLeftSpaces()
-        {
-            if (IsEmpty || _inputField.text[0] != ' ')
-                return;
-
-            int firstCharacterIndex = 0, limit = _inputField.text.Length;
-            for (; firstCharacterIndex < limit; firstCharacterIndex++)
-                if (_inputField.text[firstCharacterIndex] != ' ')
-                    break;
-
-            _inputField.SetTextWithoutNotify(_inputField.text[firstCharacterIndex..]);
-        }
-
         private void Internal_OnCommandChanged(string text)
         {
-            RemoveLeftSpaces();
+            _inputField.SetTextWithoutNotify(_inputField.text.RemoveLeftSpaces());
 
             if (!IsEmpty || _isNotEmptyLastChange)
             {
@@ -99,7 +86,8 @@ namespace PotikotTools.RuntimeConsole
 
         private void Internal_OnCommandSubmitted(string text)
         {
-            OnCommandSubmitted?.Invoke(text);
+            _inputField.SetTextWithoutNotify(_inputField.text.RemoveRightSpaces());
+            OnCommandSubmitted?.Invoke(_inputField.text);
         }
 
         private void Internal_OnFocused(string text)

@@ -1,12 +1,11 @@
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace PotikotTools.RuntimeConsole
+namespace PotikotTools.RuntimeConsole.Editor
 {
     public class ConsolePreferencesWindow : EditorWindow
     {
-        private const float _spaceBetweenBlocks = 10f;
+        private const float SpaceBetweenBlocks = 10f;
 
         private static ConsolePreferencesSO _preferences;
         private static ConsolePreferencesSO _preferencesCopy;
@@ -23,15 +22,20 @@ namespace PotikotTools.RuntimeConsole
         {
             if (_preferences == null)
             {
-                _preferences = LoadOrCreatePreferences();
+                _preferences = ConsolePreferences.GetPreferences();
                 _preferencesCopy = _preferences.CreateCopy();
             }
         }
 
         private void OnDisable()
         {
-            if (_hasUnsavedChanges && DisplayUnsavedChangesDialog())
-                SavePreferences();
+            if (_hasUnsavedChanges)
+            {
+                if (DisplayUnsavedChangesDialog())
+                    SavePreferences();
+                else
+                    _hasUnsavedChanges = false;
+            }
         }
 
         private void OnGUI()
@@ -63,7 +67,9 @@ namespace PotikotTools.RuntimeConsole
         {
             _preferences.CopyFrom(_preferencesCopy);
 
-            SavePreferences(_preferences);
+            EditorUtility.SetDirty(_preferences);
+            AssetDatabase.SaveAssetIfDirty(_preferences);
+
             _hasUnsavedChanges = false;
         }
 
@@ -88,7 +94,7 @@ namespace PotikotTools.RuntimeConsole
 
             _preferencesCopy.ToggleKey = (KeyCode)EditorGUILayout.EnumPopup("Open/Close Key", _preferencesCopy.ToggleKey);
 
-            EditorGUILayout.Space(_spaceBetweenBlocks);
+            EditorGUILayout.Space(SpaceBetweenBlocks);
         }
 
         private void DrawLogTextColorFields()
@@ -99,7 +105,7 @@ namespace PotikotTools.RuntimeConsole
             _preferencesCopy.WarningLogTextColor = EditorGUILayout.ColorField("Warning Color", _preferencesCopy.WarningLogTextColor);
             _preferencesCopy.ErrorLogTextColor = EditorGUILayout.ColorField("Error Color", _preferencesCopy.ErrorLogTextColor);
 
-            EditorGUILayout.Space(_spaceBetweenBlocks);
+            EditorGUILayout.Space(SpaceBetweenBlocks);
         }
 
         private void DrawLogBackgroundColorFields()
@@ -107,9 +113,9 @@ namespace PotikotTools.RuntimeConsole
             DrawLabel("Log Background Colors");
 
             _preferencesCopy.NormalLogBackgroundColor = EditorGUILayout.ColorField("Normal Color", _preferencesCopy.NormalLogBackgroundColor);
-            _preferencesCopy.HighlightedLogBackroundColor = EditorGUILayout.ColorField("Highlighted Color", _preferencesCopy.HighlightedLogBackroundColor);
+            _preferencesCopy.HighlightedLogBackgroundColor = EditorGUILayout.ColorField("Highlighted Color", _preferencesCopy.HighlightedLogBackgroundColor);
 
-            EditorGUILayout.Space(_spaceBetweenBlocks);
+            EditorGUILayout.Space(SpaceBetweenBlocks);
         }
 
         private void DrawCommandTextColorFields()
@@ -119,7 +125,7 @@ namespace PotikotTools.RuntimeConsole
             _preferencesCopy.HighlightedCommandColor = EditorGUILayout.ColorField("Highlighted Color", _preferencesCopy.HighlightedCommandColor);
             _preferencesCopy.PressedCommandColor = EditorGUILayout.ColorField("Pressed Color", _preferencesCopy.PressedCommandColor);
 
-            EditorGUILayout.Space(_spaceBetweenBlocks);
+            EditorGUILayout.Space(SpaceBetweenBlocks);
         }
 
         #endregion
@@ -144,37 +150,6 @@ namespace PotikotTools.RuntimeConsole
                 ok: "Ok",
                 cancel: "Cancel"
             );
-        }
-
-        #endregion
-
-        #region Save & Load
-
-        private static ConsolePreferencesSO LoadOrCreatePreferences()
-        {
-            ConsolePreferencesSO preferences = Resources.Load<ConsolePreferencesSO>(ConsolePreferences.FileName);
-
-            if (preferences == null)
-            {
-                string folderPath = "Assets/Resources/RuntimeConsole";
-                if (!Directory.Exists(folderPath))
-                    Directory.CreateDirectory(folderPath);
-
-                preferences = CreateInstance<ConsolePreferencesSO>();
-
-                AssetDatabase.CreateAsset(preferences, Path.Combine(folderPath, ConsolePreferences.FileName + ".asset"));
-
-                preferences.Reset();
-                SavePreferences(preferences);
-            }
-
-            return preferences;
-        }
-
-        private static void SavePreferences(ConsolePreferencesSO preferences)
-        {
-            EditorUtility.SetDirty(preferences);
-            AssetDatabase.SaveAssets();
         }
 
         #endregion

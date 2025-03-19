@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -57,7 +56,7 @@ namespace PotikotTools
         {
             if (!IsEnabled) return;
             IsEnabled = false;
-            Debug.Log("Hide");
+
             gameObject.SetActive(false);
         }
 

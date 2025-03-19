@@ -22,6 +22,7 @@ namespace PotikotTools.RuntimeConsole
         public void Show()
         {
             _scroll.Show();
+            _commandInputView.Focus();
 
             _commandInputView.OnCommandChanged += OnCommandChanged;
             _commandInputView.OnCommandSubmitted += Internal_OnCommandSubmitted;

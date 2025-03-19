@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PotikotTools.Commands;
 using UnityEngine;
 
@@ -44,6 +45,7 @@ namespace PotikotTools.RuntimeConsole
                     _controller.Disable();
 
                     Object.DontDestroyOnLoad(consoleView.gameObject);
+                    CommandHandler.Register("help", "Shows all available commands", LogCommands);
 
                     Debug.Log("[Console] Controller created");
                 }
@@ -60,28 +62,41 @@ namespace PotikotTools.RuntimeConsole
             }
         }
 
-        [Command("enable")]
         public static void Enable() => Controller.Enable();
 
-        [Command("disable")]
+        [Command("disable", "Disables console view", false)]
         public static void Disable() => Controller.Disable();
 
-        [Command("log")]
+        [Command("log", "Log info message in console", false)]
         public static void Log(object message)
         {
-            BaseLog(LogType.Log, message.ToString());
+            BaseLog(LogType.Log, message);
         }
 
-        [Command("warning")]
+        [Command("warning", "Log warning message in console", false)]
         public static void LogWarning(object message)
         {
-            BaseLog(LogType.Warning, message.ToString());
+            BaseLog(LogType.Warning, message);
         }
 
-        [Command("error")]
+        [Command("error", "Log error message in console", false)]
         public static void LogError(object message)
         {
-            BaseLog(LogType.Error, message.ToString());
+            BaseLog(LogType.Error, message);
+        }
+
+        public static void LogCommands()
+        {
+            Log("Command List:");
+            IReadOnlyList<ICommandInfo> commandInfos = CommandHandler.Commands;
+
+            foreach (ICommandInfo commandInfo in commandInfos)
+            {
+                if (string.IsNullOrEmpty(commandInfo.Description))
+                    Log($"{commandInfo.HintText}");
+                else
+                    Log($"{commandInfo.HintText}\n{commandInfo.Description}");
+            }
         }
 
         private static void BaseLog(LogType logType, object message)

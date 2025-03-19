@@ -9,7 +9,8 @@ namespace PotikotTools.Commands
         private Type[] _parameterTypes;
 
         public string Name { get; private set; }
-        public object Obj { get; private set; }
+        public string Description { get; private set; }
+        public object Context { get; private set; }
         public FieldInfo FieldInfo { get; private set; }
 
         public string HintText
@@ -28,16 +29,19 @@ namespace PotikotTools.Commands
 
         public bool IsValid => FieldInfo != null && !string.IsNullOrEmpty(Name);
 
-        public FieldCommandInfo(string name, FieldInfo fieldInfo, object obj = null)
+        public FieldCommandInfo(string name, string description, FieldInfo fieldInfo, object context = null)
         {
             Name = name.Replace(' ', '_');
+            Description = description;
             FieldInfo = fieldInfo;
-            Obj = obj;
+            Context = context;
         }
+
+        public FieldCommandInfo(string name, FieldInfo fieldInfo, object context = null) : this(name, null, fieldInfo, context) { }
 
         public void Invoke(object[] parameters)
         {
-            FieldInfo.SetValue(Obj, parameters[0]);
+            FieldInfo.SetValue(Context, parameters[0]);
         }
     }
 }

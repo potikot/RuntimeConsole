@@ -13,7 +13,7 @@ namespace PotikotTools.RuntimeConsole
         public Color ErrorLogTextColor = Color.red;
 
         public Color NormalLogBackgroundColor = Color.clear;
-        public Color HighlightedLogBackroundColor = new(0f, 0f, 1f, 0.75f);
+        public Color HighlightedLogBackgroundColor = new(0f, 0f, 1f, 0.75f);
 
         public Color HighlightedCommandColor = new(1f, 0.5f, 0f);
         public Color PressedCommandColor = new(1f, 0.5f, 0f, 0.75f);
@@ -25,39 +25,36 @@ namespace PotikotTools.RuntimeConsole
             ToggleKey = KeyCode.Tab;
 
             NormalLogTextColor = Color.white;
-            WarningLogTextColor = new(1f, 0.5f, 0f);
+            WarningLogTextColor = new Color(1f, 0.5f, 0f);
             ErrorLogTextColor = Color.red;
 
             NormalLogBackgroundColor = Color.clear;
-            HighlightedLogBackroundColor = new(0f, 0f, 1f, 0.75f);
+            HighlightedLogBackgroundColor = new Color(0f, 0f, 1f, 0.75f);
 
-            HighlightedCommandColor = new(1f, 0.5f, 0f);
-            PressedCommandColor = new(1f, 0.5f, 0f, 0.75f);
+            HighlightedCommandColor = new Color(1f, 0.5f, 0f);
+            PressedCommandColor = new Color(1f, 0.5f, 0f, 0.75f);
         }
 
-        public void CopyFrom(ConsolePreferencesSO preferences)
+        public void CopyFrom(ConsolePreferencesSO source)
         {
-            InitializeOnStart = preferences.InitializeOnStart;
+            InitializeOnStart = source.InitializeOnStart;
 
-            ToggleKey = preferences.ToggleKey;
+            ToggleKey = source.ToggleKey;
 
-            NormalLogTextColor = preferences.NormalLogTextColor;
-            WarningLogTextColor = preferences.WarningLogTextColor;
-            ErrorLogTextColor = preferences.ErrorLogTextColor;
+            NormalLogTextColor = source.NormalLogTextColor;
+            WarningLogTextColor = source.WarningLogTextColor;
+            ErrorLogTextColor = source.ErrorLogTextColor;
 
-            NormalLogBackgroundColor = preferences.NormalLogBackgroundColor;
-            HighlightedLogBackroundColor = preferences.HighlightedLogBackroundColor;
+            NormalLogBackgroundColor = source.NormalLogBackgroundColor;
+            HighlightedLogBackgroundColor = source.HighlightedLogBackgroundColor;
 
-            HighlightedCommandColor = preferences.HighlightedCommandColor;
-            PressedCommandColor = preferences.PressedCommandColor;
+            HighlightedCommandColor = source.HighlightedCommandColor;
+            PressedCommandColor = source.PressedCommandColor;
         }
 
         public ConsolePreferencesSO CreateCopy()
         {
-            ConsolePreferencesSO preferences = CreateInstance<ConsolePreferencesSO>();
-            preferences.CopyFrom(this);
-
-            return preferences;
+            return Instantiate(this);
         }
     }
 }

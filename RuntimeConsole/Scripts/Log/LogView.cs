@@ -39,7 +39,7 @@ namespace PotikotTools.RuntimeConsole
         public void Select()
         {
             IsSelected = true;
-            _backgroundImage.color = ConsolePreferences.HighlightedLogBackroundColor;
+            _backgroundImage.color = ConsolePreferences.HighlightedLogBackgroundColor;
         }
 
         public void Deselect()
