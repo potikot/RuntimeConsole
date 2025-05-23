@@ -20,7 +20,4 @@ MonoBehaviour:
   - Mono
   - netstandard
   - Microsoft
-  CommandAttributeUsingAssemblies:
-  - Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  - Tests, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  - PotikotTools.RuntimeConsole, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  CommandAttributeUsingAssemblies: []
